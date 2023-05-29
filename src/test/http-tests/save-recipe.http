@@ -1,0 +1,33 @@
+POST http://localhost:8080/recipes
+Content-Type: application/json
+
+{
+  "recipeName": "recipe1",
+  "serving": 4,
+  "dishType": "VEGETARIAN",
+  "instructions": "recipe should be backed in oven",
+  "ingredients": [{
+      "ingredientName" : "potatoes"
+    },
+    {
+      "ingredientName" : "tomatos"
+    }]
+}
+
+####
+
+POST http://localhost:8080/recipes
+Content-Type: application/json
+
+{
+  "recipeName": "recipe2",
+  "serving": 4,
+  "dishType": "VEGETARIAN",
+  "instructions": "testing",
+  "ingredients": [{
+      "ingredientName" : "potatoes"
+    },
+    {
+      "ingredientName" : "tomatos"
+    }]
+}

@@ -1,0 +1,24 @@
+PUT http://localhost:8080/recipes
+Content-Type: application/json
+
+{
+  "recipeId": 1,
+  "recipeName": "recipe1",
+  "serving": 4,
+  "dishType": "VEGETARIAN",
+  "instructions": "recipe should be backed in oven",
+  "ingredients": [
+    {
+      "ingredientId": 1,
+      "ingredientName": "potatoes",
+      "quantity": 0
+    },
+    {
+      "ingredientId": 2,
+      "ingredientName": "onions",
+      "quantity": 0
+    }
+  ]
+}
+
+###

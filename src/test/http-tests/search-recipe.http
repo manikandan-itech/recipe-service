@@ -1,0 +1,12 @@
+GET http://localhost:8080/recipes?dishType=VEGETARIAN
+Content-Type: application/json
+
+####
+
+GET http://localhost:8080/recipes?serving=4&ingredientName=potatoes
+Content-Type: application/json
+
+####
+
+GET http://localhost:8080/recipes?instructions=oven&ingredientName=salmon
+Content-Type: application/json
