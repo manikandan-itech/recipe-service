@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -24,19 +22,17 @@ public class RecipeEntitySearchRepositoryImpl implements RecipeEntitySearchRepos
     @Override
     public List<RecipeEntity> searchAll(RecipeEntity recipeEntity) {
 
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<RecipeEntity> criteriaQuery = criteriaBuilder.createQuery(RecipeEntity.class);
+        var criteriaBuilder = entityManager.getCriteriaBuilder();
+        var criteriaQuery = criteriaBuilder.createQuery(RecipeEntity.class);
 
-        Root<RecipeEntity> recipeEntityRoot = criteriaQuery.from(RecipeEntity.class);
-        Join<Object, Object> ingredientEntityRoot = recipeEntityRoot.join("ingredient");
+        var recipeEntityRoot = criteriaQuery.from(RecipeEntity.class);
+        var ingredientEntityRoot = recipeEntityRoot.join("ingredient");
 
-        Predicate predicate = createCondition(recipeEntity, recipeEntityRoot, ingredientEntityRoot, criteriaBuilder);
-        criteriaQuery.where(predicate);
+        var conditionString = createCondition(recipeEntity, recipeEntityRoot, ingredientEntityRoot, criteriaBuilder);
+        criteriaQuery.where(conditionString);
         criteriaQuery.distinct(true);
 
-        TypedQuery<RecipeEntity> query = entityManager.createQuery(criteriaQuery);
-
-        return query.getResultList();
+        return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
     private Predicate createCondition(RecipeEntity recipeEntity, Root<RecipeEntity> recipeEntityRoot, Join<Object, Object> ingredientEntityRoot, CriteriaBuilder criteriaBuilder) {
