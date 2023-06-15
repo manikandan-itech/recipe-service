@@ -69,13 +69,13 @@ public class RecipeController {
     }
 
     @GetMapping
-    public List<Recipe> getRecipe(@RequestParam(name = "recipeName", required = false) String recipeName,
+    public List<Recipe> searchRecipe(@RequestParam(name = "recipeName", required = false) String recipeName,
             @RequestParam(name = "serving", required = false) Long serving,
             @RequestParam(name = "dishType", required = false) DishType dishType,
             @RequestParam(name = "instructions", required = false) String instructions,
             @RequestParam(name = "ingredientName", required = false) String ingredientName){
         var recipe = createRecipe(recipeName, serving, dishType, instructions, ingredientName);
-        return recipeService.getRecipe(recipe);
+        return recipeService.searchRecipe(recipe);
     }
 
     private Recipe createRecipe(String recipeName, Long serving, DishType dishType, String instructions, String ingredientName) {

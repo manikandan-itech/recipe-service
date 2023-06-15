@@ -20,8 +20,8 @@ public class RecipeServiceImpl implements RecipeService{
     }
 
     @Override
-    public List<Recipe> getRecipe(Recipe recipe) {
-        return recipeRespository.getRecipe(recipe);
+    public List<Recipe> searchRecipe(Recipe recipe) {
+        return recipeRespository.searchRecipe(recipe);
     }
 
     @Override

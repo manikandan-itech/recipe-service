@@ -42,7 +42,7 @@ public class JpaRecipeRepository implements RecipeRespository {
     }
 
     @Override
-    public List<Recipe> getRecipe(Recipe recipe) {
+    public List<Recipe> searchRecipe(Recipe recipe) {
         var recipeEntityList = recipeEntityRespository.searchAll(toRecipeEntityMapper.map(recipe));
         return fromRecipeEntityMapper.map(recipeEntityList);
     }

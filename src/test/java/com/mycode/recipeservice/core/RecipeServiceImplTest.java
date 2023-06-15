@@ -65,9 +65,9 @@ public class RecipeServiceImplTest {
     void testGetRecipe() {
         var recipe = recipe();
 
-        var result = sut.getRecipe(recipe);
+        var result = sut.searchRecipe(recipe);
 
-        verify(recipeRespository).getRecipe(any());
+        verify(recipeRespository).searchRecipe(any());
     }
 
 }

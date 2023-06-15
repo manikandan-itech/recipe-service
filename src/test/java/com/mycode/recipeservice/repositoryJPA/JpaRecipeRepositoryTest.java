@@ -52,7 +52,7 @@ class JpaRecipeRepositoryTest {
         var receipe = recipe();
         sut.saveRecipe(receipe);
 
-        var result = sut.getRecipe(receipe);
+        var result = sut.searchRecipe(receipe);
         assertThat(result).isNotEmpty();
     }
 
@@ -73,7 +73,7 @@ class JpaRecipeRepositoryTest {
 
         sut.updateRecipe(updatedRecipe);
 
-        var fetchRecipe = sut.getRecipe(updatedRecipe);
+        var fetchRecipe = sut.searchRecipe(updatedRecipe);
 
         assertThat(fetchRecipe).isNotEmpty();
         assertThat(fetchRecipe.get(0).getDishType()).isEqualTo(updatedRecipe.getDishType());
@@ -91,7 +91,7 @@ class JpaRecipeRepositoryTest {
 
         sut.deleteRecipe(entity.getRecipeId());
 
-        var result = sut.getRecipe(fromRecipeEntityMapper.map(entity));
+        var result = sut.searchRecipe(fromRecipeEntityMapper.map(entity));
         assertThat(result).isEmpty();
     }
 
@@ -100,7 +100,7 @@ class JpaRecipeRepositoryTest {
     void test_getRecipe() {
         var recipe = saveRecipe();
 
-        var searchResult = sut.getRecipe(recipe);
+        var searchResult = sut.searchRecipe(recipe);
 
         assertThat(searchResult).isNotEmpty();
     }
@@ -110,7 +110,7 @@ class JpaRecipeRepositoryTest {
     @MethodSource("getInputArgumentsForSearchRecipe")
     void test_getRecipe(Recipe recipe) {
         var saveRecipe = saveRecipe();
-        var searchResult = sut.getRecipe(recipe);
+        var searchResult = sut.searchRecipe(recipe);
 
         assertThat(searchResult).isNotEmpty();
         assertThat(searchResult).hasSize(1);
@@ -121,7 +121,7 @@ class JpaRecipeRepositoryTest {
         var saveRecipe = saveRecipe();
         var updatedRecipe = saveRecipe.withDishType(DishType.NON_VEGETARIAN);
 
-        var searchResult = sut.getRecipe(updatedRecipe);
+        var searchResult = sut.searchRecipe(updatedRecipe);
 
         assertThat(searchResult).isEmpty();
     }
