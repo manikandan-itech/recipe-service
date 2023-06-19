@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mycode.recipeservice.api.mappers.FromRecipeDtoMapper;
-import com.mycode.recipeservice.api.mappers.ToRecipeDtoMapper;
+import com.mycode.recipeservice.api.mappers.RecipeMapper;
 import com.mycode.recipeservice.api.model.RecipeDto;
 import com.mycode.recipeservice.core.RecipeService;
 import com.mycode.recipeservice.domain.DishType;
@@ -37,16 +36,15 @@ public class RecipeController {
 
     private final RecipeService recipeService;
     
-    private final FromRecipeDtoMapper fromRecipeDtoMapper = new FromRecipeDtoMapper();
-    private final ToRecipeDtoMapper toRecipeDtoMapper = new ToRecipeDtoMapper();
+    private final RecipeMapper recipeMapper;
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(CREATED)
     public RecipeDto saveRecipe(@Valid  @RequestBody RecipeDto recipeDto){
     	log.info("Recipe creation request recived!!!");
     	
-        var recipe = fromRecipeDtoMapper.map(recipeDto);
-        var recipeSave = toRecipeDtoMapper.map(recipeService.saveRecipe(recipe));
+        var recipe = recipeMapper.asEntity(recipeDto);
+        var recipeSave = recipeMapper.asDTO(recipeService.saveRecipe(recipe));
         
         log.info("Recipe creation request Completed!!!");
         return recipeSave;
@@ -56,7 +54,7 @@ public class RecipeController {
     public void updateRecipe(@Valid @RequestBody RecipeDto recipeDto){
     	log.info("Recipe update request recived!!!");
     	
-        var recipe = fromRecipeDtoMapper.map(recipeDto);
+        var recipe = recipeMapper.asEntity(recipeDto);
         recipeService.updateRecipe(recipe);
         
         log.info("Recipe update request Completed!!!");
@@ -84,7 +82,7 @@ public class RecipeController {
                 .serving(serving)
                 .dishType(dishType)
                 .instructions(instructions)
-                .ingredients(List.of(Ingredient.builder().ingredientName(ingredientName).build()))
+                .ingredient(List.of(Ingredient.builder().ingredientName(ingredientName).build()))
                 .build();
     }
 

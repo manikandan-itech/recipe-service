@@ -11,9 +11,8 @@ import org.springframework.stereotype.Repository;
 import com.mycode.recipeservice.core.exceptions.RecipeDataNotFoundException;
 import com.mycode.recipeservice.domain.Recipe;
 import com.mycode.recipeservice.repository.RecipeRespository;
-import com.mycode.recipeservice.repositoryJPA.mappers.FromRecipeEntityMapper;
-import com.mycode.recipeservice.repositoryJPA.mappers.ToIngredientEntityMapper;
-import com.mycode.recipeservice.repositoryJPA.mappers.ToRecipeEntityMapper;
+import com.mycode.recipeservice.repositoryJPA.mappers.RecipeEntityMapper;
+import com.mycode.recipeservice.repositoryJPA.mappers.RecipeEntityMapperImpl;
 import com.mycode.recipeservice.repositoryJPA.model.RecipeEntity;
 import com.mycode.recipeservice.repositoryJPA.repositories.RecipeEntityRespository;
 
@@ -26,25 +25,24 @@ public class JpaRecipeRepository implements RecipeRespository {
 
     private final RecipeEntityRespository recipeEntityRespository;
 
-    private ToRecipeEntityMapper toRecipeEntityMapper = new ToRecipeEntityMapper();
-    private FromRecipeEntityMapper fromRecipeEntityMapper = new FromRecipeEntityMapper();
-    private ToIngredientEntityMapper toIngredientEntityMapper = new ToIngredientEntityMapper();
+    private RecipeEntityMapper recipeEntityMapper = new RecipeEntityMapperImpl();
 
     @Override
     public Recipe saveRecipe(Recipe recipe) {
         var recipeEntity = new RecipeEntity();
         try {
-            recipeEntity = recipeEntityRespository.saveAndFlush(toRecipeEntityMapper.map(recipe));
+            recipeEntity = recipeEntityRespository.saveAndFlush(recipeEntityMapper.asEntity(recipe));
         } catch (Exception e) {
+        	e.printStackTrace();
             throw new RecipeDataNotFoundException("Recipe name already exists..");
         }
-        return fromRecipeEntityMapper.map(recipeEntity);
+        return recipeEntityMapper.asDTO(recipeEntity);
     }
 
     @Override
     public List<Recipe> searchRecipe(Recipe recipe) {
-        var recipeEntityList = recipeEntityRespository.searchAll(toRecipeEntityMapper.map(recipe));
-        return fromRecipeEntityMapper.map(recipeEntityList);
+        var recipeEntityList = recipeEntityRespository.searchAll(recipeEntityMapper.asEntity(recipe));
+        return recipeEntityMapper.asDTOList(recipeEntityList);
     }
 
     @Override
@@ -54,11 +52,7 @@ public class JpaRecipeRepository implements RecipeRespository {
             throw new RecipeDataNotFoundException("Recipe not found");
         }
         var recipeEntity = entity.get();
-        recipeEntity.setRecipeName(recipe.getRecipeName());
-        recipeEntity.setInstructions(recipe.getInstructions());
-        recipeEntity.setDishType(recipe.getDishType().name());
-        recipeEntity.setServing(recipe.getServing());
-        recipeEntity.setIngredient(toIngredientEntityMapper.map(recipe.getIngredients()));
+        recipeEntity = recipeEntityMapper.asEntity(recipe);
         recipeEntityRespository.save(recipeEntity);
     }
 

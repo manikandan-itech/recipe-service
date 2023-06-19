@@ -15,5 +15,5 @@ public class Recipe {
     private Long serving;
     private DishType dishType;
     private String instructions;
-    private List<Ingredient> ingredients;
+    private List<Ingredient> ingredient;
 }

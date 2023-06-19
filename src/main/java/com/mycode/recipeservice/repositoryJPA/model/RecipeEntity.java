@@ -29,7 +29,7 @@ public final class RecipeEntity {
     private String dishType;
     private String instructions;
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "recipe_id")
+    @JoinColumn(name = "recipe_id", nullable = false)
     private List<IngredientEntity> ingredient;
 
 }

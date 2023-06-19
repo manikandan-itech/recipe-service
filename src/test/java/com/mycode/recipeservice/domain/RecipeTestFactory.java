@@ -16,7 +16,7 @@ public final class RecipeTestFactory {
                 .instructions("Instructions")
                 .recipeName("RecipeName")
                 .serving(4L)
-                .ingredients(List.of(getIngredient()))
+                .ingredient(List.of(getIngredient()))
                 .build();
     }
 
@@ -27,7 +27,7 @@ public final class RecipeTestFactory {
                 .instructions(instructions)
                 .recipeName("RecipeName")
                 .serving(4L)
-                .ingredients(List.of(getIngredient()))
+                .ingredient(List.of(getIngredient()))
                 .build();
     }
 
@@ -37,11 +37,11 @@ public final class RecipeTestFactory {
                 .instructions(instructions)
                 .serving(serving)
                 .recipeName(recipeName)
-                .ingredients(ingredients)
+                .ingredient(ingredients)
                 .build();
     }
 
     private static Ingredient getIngredient() {
-        return Ingredient.builder().ingredientName("ingredient").build();
+        return Ingredient.builder().ingredientId(1L).ingredientName("ingredient").build();
     }
 }

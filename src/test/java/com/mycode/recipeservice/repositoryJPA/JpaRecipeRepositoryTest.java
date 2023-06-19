@@ -26,7 +26,8 @@ import com.mycode.recipeservice.core.exceptions.RecipeDataNotFoundException;
 import com.mycode.recipeservice.domain.DishType;
 import com.mycode.recipeservice.domain.Ingredient;
 import com.mycode.recipeservice.domain.Recipe;
-import com.mycode.recipeservice.repositoryJPA.mappers.FromRecipeEntityMapper;
+import com.mycode.recipeservice.repositoryJPA.mappers.RecipeEntityMapper;
+import com.mycode.recipeservice.repositoryJPA.mappers.RecipeEntityMapperImpl;
 import com.mycode.recipeservice.repositoryJPA.repositories.RecipeEntityRespository;
 
 @DataJpaTest
@@ -37,7 +38,7 @@ class JpaRecipeRepositoryTest {
     private static final String INSTRUCTIONS = "Instructions";
     private static final Long SERVING = 4L;
     private static final String DISHTYPE = VEGETARIAN.name();
-    private final FromRecipeEntityMapper fromRecipeEntityMapper = new FromRecipeEntityMapper();
+    private final RecipeEntityMapper fromRecipeEntityMapper = new RecipeEntityMapperImpl();
 
 
     @Autowired
@@ -69,7 +70,7 @@ class JpaRecipeRepositoryTest {
         var recipe = saveRecipe();
         var updatedRecipe = recipe.withInstructions("Ins");
         updatedRecipe = updatedRecipe.withDishType(DishType.NON_VEGETARIAN);
-        updatedRecipe = updatedRecipe.withIngredients(List.of(Ingredient.builder().ingredientName("Chicken").build()));
+        updatedRecipe = updatedRecipe.withIngredient(List.of(Ingredient.builder().ingredientName("Chicken").build()));
 
         sut.updateRecipe(updatedRecipe);
 
@@ -80,7 +81,7 @@ class JpaRecipeRepositoryTest {
         assertThat(fetchRecipe.get(0).getInstructions()).isEqualTo(updatedRecipe.getInstructions());
         assertThat(fetchRecipe.get(0).getServing()).isEqualTo(updatedRecipe.getServing());
         assertThat(fetchRecipe.get(0).getRecipeName()).isEqualTo(updatedRecipe.getRecipeName());
-        assertThat(fetchRecipe.get(0).getIngredients().get(0).getIngredientName()).isEqualTo(updatedRecipe.getIngredients().get(0).getIngredientName());
+        assertThat(fetchRecipe.get(0).getIngredient().get(0).getIngredientName()).isEqualTo(updatedRecipe.getIngredient().get(0).getIngredientName());
 
     }
 
@@ -91,7 +92,7 @@ class JpaRecipeRepositoryTest {
 
         sut.deleteRecipe(entity.getRecipeId());
 
-        var result = sut.searchRecipe(fromRecipeEntityMapper.map(entity));
+        var result = sut.searchRecipe(fromRecipeEntityMapper.asDTO(entity));
         assertThat(result).isEmpty();
     }
 
